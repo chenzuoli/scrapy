@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 import MySQLdb as mdb
 import sys
+import json
+import uuid
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -20,7 +22,7 @@ dbname = 'website'
 file_path = sys.argv[1]
 
 with open(file_path, 'r') as f:
-        lines=f.readlines()
+    lines=f.readlines()
 
 try:
 
@@ -31,18 +33,16 @@ try:
         title=jsonline["title"].replace(r'\s', '').replace("%", "")
         sub_title = re.sub('\s','',title)
         author = jsonline["author"]
+        html = jsonline["html"]
         publish_time = jsonline["publish_time"]
         content = jsonline["content"]
         # 查询数据条目
-        count = cursor.execute('SELECT * FROM articles WHERE title = %s' %title)
-        print 'total records: %d' %count
-        print 'total records:', cursor.rowcount
+        count = cursor.execute('SELECT * FROM articles WHERE title = %s' %sub_title)
+        print 'select title %s total records: %d' % (sub_title,count)
         if count == 0:
-
-
-    value = [2,'John']
-    cursor.execute('INSERT INTO test values(%s,%s)',value)
-
+            sql = 'INSERT INTO TABLE articles (id, title, content, html, publish_time, author) values (%s,%s,%s,%s,%s,%s)' % (uuid.uuid1(), sub_title, content, html, publish_time, author)
+            print 'execute insert sql %s' % sql
+            cursor.execute(sql)
 
 
     # 如果没有设置自动提交事务，则这里需要手动提交一次

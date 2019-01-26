@@ -11,6 +11,11 @@ content_path=$thrump_path/content
 decode_content_path=$thrump_path/decoded_file
 etl_path=$thrump_path/etl
 md_path=$thrump_path/md
+backup_md_path=/mnt/md
+backup_etl_path=/mnt/etl
+backup_decode_path=/mnt/decoded_file
+backup_content_path=/mnt/content
+backup_html_path=/mnt/html
 hexo_path=/mnt/hexo
 #website_path=/var/www/html
 
@@ -24,14 +29,24 @@ python $thrump_path/decode.py $content_path/content_$cur_time.jl $decode_content
 echo "################ etl the content and write the md file."
 python $thrump_path/write_md.py $decode_content_path/content_$cur_time.json $etl_path/content_$cur_time.json
 
+echo "################ insert the content into mysql."
+python $thrump_path/tomysql.py $etl_path/content_$cur_time.json
+
+echo "################ backup content/etl/decoded/md file."
+mv $hexo_path/source/_posts/* $backup_md_path/
+mv $content_path/* $backup_content_path/
+mv $etl_path/* $backup_etl_path/
+mv $decode_content_path/* $backup_decode_path/
+mv $html_path/* $backup_html_path/
+
 echo "################ deploy the md file."
 mv $md_path/*.md $hexo_path/source/_posts/
 
-echo "################ commit scrapy project."
-cd $parent_path
-git add .
-git commit -m "commit at $cur_time"
-git push origin master
+#echo "################ commit scrapy project."
+#cd $parent_path
+#git add .
+#git commit -m "commit at $cur_time"
+#git push origin master
 
 cd $hexo_path
 /usr/local/bin/hexo generate

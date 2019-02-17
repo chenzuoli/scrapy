@@ -33,7 +33,7 @@ echo "################ insert the content into mysql."
 python $thrump_path/tomysql.py $etl_path/content_$cur_time.json
 
 echo "################ backup content/etl/decoded/md file."
-mv $hexo_path/source/_posts/* $backup_md_path/
+#mv $hexo_path/source/_posts/* $backup_md_path/
 mv $content_path/* $backup_content_path/
 mv $etl_path/* $backup_etl_path/
 mv $decode_content_path/* $backup_decode_path/

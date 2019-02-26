@@ -19,9 +19,9 @@ hexo_path=/mnt/hexo
 #website_path=/var/www/html
 
 cd $base_path
-#/usr/local/bin/scrapy crawl ifeng_news -o $html_path/html_$cur_time.jl
+/usr/local/bin/scrapy crawl ifeng_news -o $html_path/html_$cur_time.jl
 
-#python etl.py $html_path/html_$cur_time.jl $html_path/html_$cur_date.json
+python etl.py $html_path/html_$cur_time.jl $html_path/html_$cur_date.json
 
 
 echo "########## get the html content start..."
@@ -41,10 +41,10 @@ python $base_path/tomysql.py $etl_path/content_$cur_time.json
 
 echo "################ backup content/etl/decoded/md file."
 #mv $hexo_path/source/_posts/* $backup_md_path/
-mv $content_path/* $backup_content_path/
-mv $etl_path/* $backup_etl_path/
-mv $decode_content_path/* $backup_decode_path/
-mv $html_path/* $backup_html_path/
+rm $content_path/* $backup_content_path/
+rm $etl_path/* $backup_etl_path/
+rm $decode_content_path/* $backup_decode_path/
+rm $html_path/* $backup_html_path/
 
 echo "################ deploy the md file."
 mv $md_path/*.md $hexo_path/source/_posts/

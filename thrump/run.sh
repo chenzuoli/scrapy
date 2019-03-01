@@ -53,9 +53,9 @@ cd $hexo_path
 /usr/local/bin/hexo deploy
 
 echo "################ commit hexo project."
-git add .
-git commit -m "commit at $cur_time"
-git push origin master
+#git add .
+#git commit -m "commit at $cur_time"
+#git push origin master
 
 #cd $website_path
 #git pull origin master

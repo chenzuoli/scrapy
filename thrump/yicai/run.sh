@@ -11,3 +11,5 @@ cd $base_path
 /usr/local/bin/scrapy crawl yicai_news -o $html_path/html_$cur_time.jl
 
 python etl.py $html_path/html_$cur_time.jl ../html/html_$cur_date.json
+
+rm $html_path/html_$cur_time.jl
